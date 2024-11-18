@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Particionar discos
 
 sudo fdisk /dev/sdc
@@ -7,9 +8,9 @@ n
 
 p
 
--
 
--
+
+
 
 +20M
 
@@ -27,9 +28,9 @@ n
 
 p
 
--
 
--
+
+
 
 +1.5G
 
@@ -47,9 +48,9 @@ n
 
 p
 
--
 
--
+
+
 
 +700pM
 
