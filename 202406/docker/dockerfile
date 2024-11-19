@@ -1,0 +1,9 @@
+# Usa nginx como imagen base
+FROM nginx:latest
+
+# Copia el archivo index.html modificado al directorio de nginx
+COPY index.html /usr/share/nginx/html/index.html
+
+# Exponer el puerto 80
+EXPOSE 80
+

@@ -1,0 +1,46 @@
+---
+# tasks file for 2do_parcial
+
+- debug:
+    msg: "Tareas del 2do Parcial"
+
+- name: Create required directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  with_items:
+    - /tmp/2do_parcial/alumno
+    - /tmp/2do_parcial/equipo
+
+- name: Create student file data
+  template:
+    src: datos_alumno.txt.j2
+    dest: /tmp/2do_parcial/alumno/datos_alumno.txt
+  vars:
+    student_name: "Candela"
+    student_lastName: "Izquierdo"
+    student_class: "115"
+
+- name: Obtener información del equipo
+  set_fact:
+    pc_ip: "{{ lookup('pipe', 'curl -s ifconfig.me') }}"
+    pc_distribution: "{{ lookup('pipe', 'lsb_release -d | cut -f2') }}"
+    pc_cores: "{{ lookup('pipe', 'nproc') }}"
+
+- name: Create pc file data
+  template:
+    src: datos_equipo.txt.j2
+    dest: /tmp/2do_parcial/equipo/datos_equipo.txt
+  vars:
+    pc_ip: "{{ pc_ip }}"
+    pc_distribution: "{{ pc_distribution }}"
+    pc_cores: "{{ pc_cores }}"
+
+- name: Set permissions 2PSupervisores
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^%2PSupervisores'
+    line: '%2PSupervisores ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
